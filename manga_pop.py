@@ -21,7 +21,7 @@ def writeLog(text):
 
 def sendmail_(Subject, img, txt_message):
     username = 'vachirawit.mark@gmail.com'
-    password = 'Mark00009999'
+    password = ''
 
     me = 'vachirawit.mark@gmail.com'
     you = 'vachirawit.mark@gmail.com'
