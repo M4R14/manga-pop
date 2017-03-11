@@ -104,7 +104,7 @@ def job():
                     "link" : text['href'],
                     "timestamp": timeStamp
                 }
-                txt_ntfy = txt_ntfy + title + '\n'
+                txt_ntfy = txt_ntfy + title + ' >> ' + text['href'] + '?all\n'
                 txt_message = txt_message + '<li><a href="'+ text['href'] +'?all">' + title +'</a></li>'
                 data_log.append(data)
 
