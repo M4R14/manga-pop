@@ -95,7 +95,11 @@ class manga_pop(object):
       onSite = []
       if site == 'niceoppai':
           req = Request(link, headers={'User-Agent': 'Mozilla/5.0'})
-          mysite = urlopen(req).read()
+          try:
+              mysite = urlopen(req).read()
+              pass
+          except Exception as e:
+              raise
           soup_mysite = BeautifulSoup(mysite, 'lxml')
           description = soup_mysite.find("ul", {"class": "lst"}) # meta tag description
 
@@ -116,13 +120,16 @@ class manga_pop(object):
       list_update = [];
 
       for site in manga:
+        size = len(manga[site])
+        counter = 1;
         for cartoon in manga[site]:
-            bar.next()
+            # bar.next()
             index = 0
+            print('('+ str(counter)+ '/'+ str(size) +')',cartoon);
+            counter = counter + 1
             for log in self._full_log:
                 if log['name'] == cartoon:
                     link = manga[site][cartoon]
-                    # print(cartoon, '[', link,']');
                     onSite = self._getMangaFormLink(site, link)
                     if len(log['chapter']) == 0:
                         poin_update = poin_update + 1
@@ -152,23 +159,26 @@ class manga_pop(object):
                     # call(['ntfy','--title', cartoon ,'send', 'By Mark.Vachi' ])
                 index = index + 1
                 # time.sleep(0.01)
-            os.system('cls')
-            bar.finish()
-
+            # os.system('cls')
+            # bar.finish()
+      print("-------------------------------------------")
       if poin_update > 0:
           with open(self._log_file_mane, 'w') as f:
                json.dump(self._full_log, f)
           old = ''
+          print('Update')
+          print('|')
           for list_manga in list_update:
             #   print(list_manga)
               if not old == list_manga['name']:
                   old = list_manga['name']
-                  print(list_manga['name'], len(list_manga['chapter']), 'update.')
-                  print('---------------------------------------------------')
+                  print('|')
+                  print("+-",list_manga['name'])
+                  print('|   |')
                   pass
-              print('  +',list_manga['chapter']['title'], '>>',list_manga['chapter']['link'])
+              print('|   +-',list_manga['chapter']['title'], '>>',list_manga['chapter']['link'])
               pass
-          print('---------------------------------------------------')
+        #   print('---------------------------------------------------')
           pass
       if poin_update == 0:
           print(" 0 Update.");
